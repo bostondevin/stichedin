@@ -31,8 +31,6 @@
     searchStore.set(null);
     locationStore.set(item);
 
-    if (timer) timer.clearInterval();
-
     if (item.latitude) {
       let url =
         "https://api.open-meteo.com/v1/forecast?latitude=" +
@@ -45,9 +43,9 @@
         .then((data) => {
           selectedLocation.set(data);
           updateDataValues();
-          timer = setInterval(() => {
+          timer = setTimeout(() => {
             updateDataValues();
-          }, 5 * 60 * 1000); // refresh every 5 minutes...
+          }, 5 * 60 * 1000); // refresh...
         });
     }
 
