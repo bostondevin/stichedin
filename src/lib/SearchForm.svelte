@@ -101,68 +101,74 @@
   });
 </script>
 
-<form
-  class="flex gap-2 w-1/3"
-  on:submit|preventDefault={findLocationsByNameOrZip}
->
-  <input
-    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-    type="text"
-    placeholder="Enter city or zip..."
-    bind:value={cityOrZip}
-  />
+<div class="text-center mt-3">
+  <div class="inline-block w-1/3">
+    <form
+      class="flex gap-2"
+      on:submit|preventDefault={findLocationsByNameOrZip}
+    >
+      <input
+        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+        type="text"
+        placeholder="Enter city or zip..."
+        bind:value={cityOrZip}
+      />
 
-  <button
-    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-    type="submit">Search</button
-  >
-</form>
+      <button
+        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+        type="submit">Search</button
+      >
+    </form>
+  </div>
 
-{#if $selectedLocation?.elevation}
-  <h1 class="text-2xl mt-3">
-    {$locationStore.name},
-    {$locationStore.admin1} - {$locationStore.country}
-  </h1>
+  {#if $selectedLocation?.elevation}
+    <h1 class="text-2xl mt-3">
+      {$locationStore.name},
+      {$locationStore.admin1} - {$locationStore.country}
+    </h1>
 
-  {#if timeIndex !== null}
-    <p class="opacity-50 text-xs mb-3">
-      Latitude: {$selectedLocation.latitude}, Longitude: {$selectedLocation.longitude},
-      Elevation: {$selectedLocation.elevation}, Time: {$selectedLocation.hourly
-        .time[timeIndex]}
-    </p>
+    {#if timeIndex !== null}
+      <p class="opacity-50 text-xs mb-3">
+        Latitude: {$selectedLocation.latitude}, Longitude: {$selectedLocation.longitude},
+        Elevation: {$selectedLocation.elevation}, Time: {$selectedLocation
+          .hourly.time[timeIndex]}
+      </p>
 
-    <span class="text-2xl"
-      >{toFarenheight($selectedLocation.hourly.apparent_temperature[timeIndex])}
-      / {$selectedLocation.hourly.apparent_temperature[
+      <span class="text-2xl"
+        >{toFarenheight(
+          $selectedLocation.hourly.apparent_temperature[timeIndex]
+        )}
+        / {$selectedLocation.hourly.apparent_temperature[
+          timeIndex
+        ]}{$selectedLocation.hourly_units.apparent_temperature}</span
+      ><br />
+
+      Precipitation: {$selectedLocation.hourly.precipitation[
         timeIndex
-      ]}{$selectedLocation.hourly_units.apparent_temperature}</span
-    ><br />
+      ]}{$selectedLocation.hourly_units.precipitation}<br />
 
-    Precipitation: {$selectedLocation.hourly.precipitation[
-      timeIndex
-    ]}{$selectedLocation.hourly_units.precipitation}<br />
+      Weather Code: {getWeatherCode(
+        $selectedLocation.hourly.weathercode[timeIndex]
+      )}<br />
 
-    Weather Code: {getWeatherCode(
-      $selectedLocation.hourly.weathercode[timeIndex]
-    )}<br />
-
-    Day High: {toFarenheight(high)} / {high}{$selectedLocation.hourly_units
-      .apparent_temperature}<br />
-    Day Low: {toFarenheight(low)} / {low}{$selectedLocation.hourly_units
-      .apparent_temperature}<br />
+      Day High: {toFarenheight(high)} / {high}{$selectedLocation.hourly_units
+        .apparent_temperature}<br />
+      Day Low: {toFarenheight(low)} / {low}{$selectedLocation.hourly_units
+        .apparent_temperature}<br />
+    {/if}
+  {:else if $searchStore?.results}
+    <p class="mt-3">Choose one:</p>
+    <ul>
+      {#each $searchStore.results as item (item.id)}
+        <li>
+          <button
+            class="mb-1 w-full block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            on:click={(e) => setLocation(item)}
+            >{item.name}, {item.admin1},
+            {item.country}</button
+          >
+        </li>
+      {/each}
+    </ul>
   {/if}
-{:else if $searchStore?.results}
-  <p class="mt-3">Choose one:</p>
-  <ul>
-    {#each $searchStore.results as item (item.id)}
-      <li>
-        <button
-          class="mb-1 w-full block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-          on:click={(e) => setLocation(item)}
-          >{item.name}, {item.admin1},
-          {item.country}</button
-        >
-      </li>
-    {/each}
-  </ul>
-{/if}
+</div>
