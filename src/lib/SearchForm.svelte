@@ -6,7 +6,7 @@
     selectedLocation,
   } from "../stores/ui/uiStore";
 
-  let cityOrZip, timeIndex, timer, low, high;
+  let cityOrZip, timeIndex, timer, low, high, currentTime;
 
   $: timeIndex;
 
@@ -52,10 +52,10 @@
     const updateDataValues = () => {
       const now = new Date();
       now.setMinutes(0);
+      now.setSeconds(0);
       const nowStr = now.toISOString().slice(0, 16);
       timeIndex = $selectedLocation.hourly.time.findIndex((d) => d === nowStr);
 
-      //todo - localize the dates...
       const dayTemps = [];
       $selectedLocation.hourly.time.forEach((item, index) => {
         if (item.indexOf(nowStr.slice(0, 10)) === 0) {
@@ -63,6 +63,7 @@
         }
       });
 
+      currentTime = now.toLocaleString();
       low = Math.min(...dayTemps);
       high = Math.max(...dayTemps);
     };
@@ -130,8 +131,7 @@
     {#if timeIndex !== null}
       <p class="opacity-50 text-xs mb-3">
         Latitude: {$selectedLocation.latitude}, Longitude: {$selectedLocation.longitude},
-        Elevation: {$selectedLocation.elevation}, Time: {$selectedLocation
-          .hourly.time[timeIndex]}
+        Elevation: {$selectedLocation.elevation}, Time: {currentTime}
       </p>
 
       <span class="text-2xl"
