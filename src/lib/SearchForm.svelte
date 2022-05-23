@@ -10,6 +10,10 @@
 
   $: timeIndex;
 
+  const toFarenheight = (celcius) => {
+    return (celcius * (9 / 5) + 32).toFixed(1) + "°F";
+  };
+
   const searchLocation = () => {
     selectedLocation.set(null);
     fetch(
@@ -129,10 +133,8 @@
     </p>
 
     <span class="text-2xl"
-      >{(
-        $selectedLocation.hourly.apparent_temperature[timeIndex] * (9 / 5) +
-        32
-      ).toFixed(1)}°F / {$selectedLocation.hourly.apparent_temperature[
+      >{toFarenheight($selectedLocation.hourly.apparent_temperature[timeIndex])}
+      / {$selectedLocation.hourly.apparent_temperature[
         timeIndex
       ]}{$selectedLocation.hourly_units.apparent_temperature}</span
     ><br />
@@ -145,10 +147,10 @@
       $selectedLocation.hourly.weathercode[timeIndex]
     )}<br />
 
-    Day High: {(high * (9 / 5) + 32).toFixed(1)}°F / {high}{$selectedLocation
-      .hourly_units.apparent_temperature}<br />
-    Day Low: {(low * (9 / 5) + 32).toFixed(1)}°F / {low}{$selectedLocation
-      .hourly_units.apparent_temperature}<br />
+    Day High: {toFarenheight(high)} / {high}{$selectedLocation.hourly_units
+      .apparent_temperature}<br />
+    Day Low: {toFarenheight(low)} / {low}{$selectedLocation.hourly_units
+      .apparent_temperature}<br />
   {/if}
 {:else if $searchStore?.results}
   <p class="mt-3">Choose one:</p>
