@@ -14,7 +14,7 @@
     return (celcius * (9 / 5) + 32).toFixed(1) + "°F";
   };
 
-  const searchLocation = () => {
+  const findLocationsByNameOrZip = () => {
     selectedLocation.set(null);
     fetch(
       "https://geocoding-api.open-meteo.com/v1/search?name=" +
@@ -42,19 +42,20 @@
         .then((response) => response.json())
         .then((data) => {
           selectedLocation.set(data);
-          updateDateIndex();
+          updateDataValues();
           timer = setTimeout(() => {
-            updateDateIndex();
+            updateDataValues();
           }, 5 * 60 * 1000); // refresh...
         });
     }
 
-    const updateDateIndex = () => {
+    const updateDataValues = () => {
       const now = new Date();
       now.setMinutes(0);
       const nowStr = now.toISOString().slice(0, 16);
       timeIndex = $selectedLocation.hourly.time.findIndex((d) => d === nowStr);
 
+      //todo - localize the dates...
       const dayTemps = [];
       $selectedLocation.hourly.time.forEach((item, index) => {
         if (item.indexOf(nowStr.slice(0, 10)) === 0) {
@@ -87,6 +88,7 @@
   };
 
   const clearLocation = () => {
+    // todo, add a clear button?
     localStorage.setItem("savedLocale", null);
   };
 
@@ -99,7 +101,10 @@
   });
 </script>
 
-<form class="flex gap-2 w-1/3" on:submit|preventDefault={searchLocation}>
+<form
+  class="flex gap-2 w-1/3"
+  on:submit|preventDefault={findLocationsByNameOrZip}
+>
   <input
     class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
     type="text"
