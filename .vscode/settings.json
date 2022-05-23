@@ -1,0 +1,16 @@
+{
+  "editor.formatOnSave": true,
+  "editor.fontSize": 11,
+  "window.zoomLevel": 0,
+  "[svelte]": {
+    "format.enable": true,
+    "editor.defaultFormatter": "svelte.svelte-vscode"
+  },
+  "editor.codeActionsOnSave": {
+    "source.fixAll": true,
+    "addMissingImports": true
+  },
+  "workbench.editor.enablePreview": false,
+  "git.ignoreLimitWarning": true,
+  "npm-scripts.showStartNotification": false
+}
