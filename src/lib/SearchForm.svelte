@@ -38,11 +38,9 @@
         "&longitude=" +
         item.longitude +
         "&hourly=temperature_2m,apparent_temperature,apparent_temperature,precipitation,weathercode";
-      console.log(url);
       fetch(url)
         .then((response) => response.json())
         .then((data) => {
-          console.log(data);
           selectedLocation.set(data);
           updateDateIndex();
           timer = setTimeout(() => {
@@ -55,7 +53,6 @@
       const now = new Date();
       now.setMinutes(0);
       const nowStr = now.toISOString().slice(0, 16);
-      console.log(nowStr);
       timeIndex = $selectedLocation.hourly.time.findIndex((d) => d === nowStr);
 
       const dayTemps = [];
@@ -67,8 +64,6 @@
 
       low = Math.min(...dayTemps);
       high = Math.max(...dayTemps);
-
-      console.log(dayTemps);
     };
   };
 
