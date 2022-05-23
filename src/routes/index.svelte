@@ -3,13 +3,13 @@
 </script>
 
 <div class="p-3">
-  <SearchForm />
+  <SearchForm id="a" />
 </div>
 
 <div class="p-3">
-  <SearchForm />
+  <SearchForm id="b" />
 </div>
 
 <div class="p-3">
-  <SearchForm />
+  <SearchForm id="c" />
 </div>

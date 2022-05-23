@@ -2,6 +2,8 @@
   import { writable } from "svelte/store";
   import { onMount } from "svelte";
 
+  export let id;
+
   let cityOrZip, timeIndex, timer, low, high, currentTime;
 
   $: timeIndex;
@@ -27,7 +29,7 @@
   };
 
   const setLocation = (item) => {
-    localStorage.setItem("savedLocale", JSON.stringify(item));
+    localStorage.setItem("savedLocale" + id, JSON.stringify(item));
     searchStore.set(null);
     locationStore.set(item);
 
@@ -91,11 +93,11 @@
 
   const clearLocation = () => {
     // todo, add a clear button?
-    localStorage.setItem("savedLocale", null);
+    localStorage.setItem("savedLocale" + id, null);
   };
 
   onMount(() => {
-    let storedLocation = localStorage.getItem("savedLocale");
+    let storedLocation = localStorage.getItem("savedLocale" + id);
     const parsed = JSON.parse(storedLocation);
     if (parsed) {
       setLocation(parsed);
