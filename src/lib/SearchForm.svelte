@@ -103,7 +103,7 @@
 </script>
 
 <div class="text-center mt-3">
-  <div class="inline-block w-1/3">
+  <div class="inline-block w-full md:w-1/3">
     <form
       class="flex gap-2"
       on:submit|preventDefault={findLocationsByNameOrZip}
@@ -116,8 +116,8 @@
       />
 
       <button
-        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-        type="submit">Search</button
+        class="bg-blue-500 whitespace-nowrap hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+        type="submit">Check Weather</button
       >
     </form>
   </div>
@@ -131,7 +131,7 @@
     {#if timeIndex !== null}
       <p class="opacity-50 text-xs mb-3">
         Latitude: {$selectedLocation.latitude}, Longitude: {$selectedLocation.longitude},
-        Elevation: {$selectedLocation.elevation}, Time: {currentTime}
+        Elevation: {$selectedLocation.elevation}, on {currentTime}
       </p>
 
       <span class="text-2xl"
@@ -143,13 +143,11 @@
         ]}{$selectedLocation.hourly_units.apparent_temperature}</span
       ><br />
 
+      {getWeatherCode($selectedLocation.hourly.weathercode[timeIndex])}<br />
+
       Precipitation: {$selectedLocation.hourly.precipitation[
         timeIndex
       ]}{$selectedLocation.hourly_units.precipitation}<br />
-
-      Weather Code: {getWeatherCode(
-        $selectedLocation.hourly.weathercode[timeIndex]
-      )}<br />
 
       Day High: {toFarenheight(high)} / {high}{$selectedLocation.hourly_units
         .apparent_temperature}<br />
