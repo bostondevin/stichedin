@@ -1,14 +1,14 @@
 <script lang="ts">
+  import { writable } from "svelte/store";
   import { onMount } from "svelte";
-  import {
-    locationStore,
-    searchStore,
-    selectedLocation,
-  } from "../stores/ui/uiStore";
 
   let cityOrZip, timeIndex, timer, low, high, currentTime;
 
   $: timeIndex;
+
+  const searchStore = writable({});
+  const selectedLocation = writable({});
+  const locationStore = writable({});
 
   const toFarenheight = (celcius) => {
     return (celcius * (9 / 5) + 32).toFixed(1) + "°F";
@@ -41,6 +41,7 @@
       fetch(url)
         .then((response) => response.json())
         .then((data) => {
+          console.log(data);
           selectedLocation.set(data);
           updateDataValues();
           timer = setTimeout(() => {

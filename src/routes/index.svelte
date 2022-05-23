@@ -5,3 +5,11 @@
 <div class="p-3">
   <SearchForm />
 </div>
+
+<div class="p-3">
+  <SearchForm />
+</div>
+
+<div class="p-3">
+  <SearchForm />
+</div>
